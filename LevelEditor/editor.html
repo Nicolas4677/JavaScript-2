@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Angry Pigs - Level Editor</title>
+
+        <meta name="description" content="Demo">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+        <link rel="stylesheet" href="css/style.css">
+
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    </head>
+    <body>
+        
+        <!--Top bar-->
+        <section style="position: fixed; width: 100%;">
+
+            <div class="topBar" style="display: flex; justify-content: center;">
+                
+                <div class="barButton buttonHoverOutColor" id="upload-button" style="margin: 10px;">
+                    Upload
+                    <i class="fas fa-file-upload barIcon"></i>
+                </div>
+
+                <div class="barButton buttonHoverOutColor" id="load-button" style="margin: 10px;">
+                    Load
+                    <i class="fas fa-file-download barIcon"></i>
+                </div>
+
+                <div class="barButton buttonHoverOutColor" id="level-info-button" style="margin: 10px;">
+                    Level Info
+                    <i class="fas fa-info-circle barIcon"></i>
+                </div>
+
+                <div class="barButton buttonHoverOutColor" id="remove-element-button" style="margin: 10px;">
+                    Remove Element
+                    <i class="fas fa-trash-alt barIcon"></i>
+                </div>
+                
+            </div>
+
+            <!--Game Display-->
+            <div style="width: 100%; justify-content: center; ">
+
+                <div id="game-display" class="gameResolution" style="background-color: black;">
+
+                    <!--Asset menu-->
+                    <div class="assetMenu assetMenuClosed" id="assetMenu" style="z-index: 2;">
+                        <div style="display: flex; flex-direction: row; justify-content: center;">
+                            <div id="assetMenuButton" class="assetMenuButton">
+                                <i id="assetMenuButtonIcon" class="fas fa-arrow-circle-up barIcon barButton buttonHoverOutColor"></i>
+                                <!--<i class="fas fa-arrow-circle-down"></i>-->
+                            </div>
+                        </div>
+
+                        <!--Asset container-->
+                        <div id="asset-container" class="assetContainer">
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!--Pop Ups-->
+        <section id="popUpWindow" class="adjustToParent popUpSection hide">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="popUpContainer">
+
+                    <div style="position: relative; left: 400px; top: 20px;">
+                        <i id="closePopUp" class="fas fa-times-circle barIcon barButton buttonHoverOutColor"></i>
+                    </div>
+
+                    <div style="display: flex; width: 100%; height: 100%; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+
+                            <!--Upload Menu-->
+                            <div id="upload-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="upload-level" class="tabLinks uploadTab inactiveTab">Level</button>
+                                    <button id="upload-gameObject" class="tabLinks uploadTab inactiveTab">Game Object</button>
+                                </div>
+                                  
+                                <div id="upload-level-content" class="tabContent uploadContent hide">
+                                    <form id="upload-level-form">
+                                        <label>File Name: </label>
+                                        <input type="text" name="name" value="" placeholder="level-1..."><br>
+                                        <label>Level Position: </label>
+                                        <input type="number" name="levelPosition" value="" placeholder="1, 2, 3..."><br>
+                                        <label>3 stars score: </label>
+                                        <input type="number" name="threeStarsScore" value="" placeholder="The highest score..."><br>
+                                        <label>2 stars score: </label>
+                                        <input type="number" name="twoStartsScore" value="" placeholder="The 2nd highest score..."><br>
+                                        <label>Shots count: </label>
+                                        <input type="number" name="ammo" value="" placeholder="Max shots per level"><br>
+                                        <input type="submit" name="action" value="Save level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="upload-gameObject-content" class="tabContent uploadContent hide">
+
+                                    <form id="upload-game-object-form">
+                                        <label>File Name: </label>
+                                        <input type="text" name="name" value="" placeholder="How will be stored..."><br>
+                                        <label>Tag: </label>
+                                        <input type="text" name="tag" value="" placeholder="Category..."><br>
+                                        <label>Width:</label>
+                                        <input type="number" name="width" value="100"><br>
+                                        <label>Height:</label>
+                                        <input type="number" name="height" value="100"><br>
+                                        <label>Sprite: </label>
+                                        <select id="game-object-sprite"> Sprite </select><br>
+                                        <label>Shape: </label>
+                                        <select id="game-object-shape"> Sprite 
+                                            <option value="AABB">AABB</option>
+                                            <option value="Circle">Circle</option>
+                                        </select><br>
+                                        <label>Friction:</label>
+                                        <input type="number" name="friction" value="1" step="0.01" max="1" min="0"><br>
+                                        <label>Restitution:</label>
+                                        <input type="number" name="restitution" value="1" step="0.01" max="1" min="0"><br>
+                                        <input type="submit" name="action" value="Save GameObject" >
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!--Load Menu-->
+                            <div id="load-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="load-level" class="tabLinks loadTab inactiveTab">Level</button>
+                                    <button id="load-background" class="tabLinks loadTab inactiveTab">Background</button>
+                                </div>
+                                  
+                                <div id="load-level-content" class="tabContent loadContent hide">
+                                    <form id="load-level-form">
+                                        <label>File: </label>
+                                        <select id="level-to-load">level</select><br>
+                                        <input type="submit" name="action" value="Load Level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="load-background-content" class="tabContent loadContent hide">
+                                    <form id="load-background-form">
+                                        <label>File: </label>
+                                        <select id="background-to-load">background</select><br>
+                                        <input type="submit" name="action" value="Load Background" >
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!--Level Info-->
+                            <div id="level-info-menu" class="popUpContent hide">
+
+                            </div>
+
+                            <!--Remove Element-->
+                            <div id="remove-element-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="remove-level" class="tabLinks removeElementTab inactiveTab">Level</button>
+                                    <button id="remove-background" class="tabLinks removeElementTab inactiveTab">Background</button>
+                                    <button id="remove-gameObject" class="tabLinks removeElementTab inactiveTab">Game Object</button>
+                                </div>
+                                  
+                                <div id="remove-level-content" class="tabContent removeElementContent hide">
+                                    <form id="remove-level-form">
+                                        <label>File: </label>
+                                        <select id="level-to-remove">level</select><br>
+                                        <input type="submit" name="action" value="Remove Level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="remove-background-content" class="tabContent removeElementContent hide">
+
+                                    <form id="remove-background-form">
+                                        <label>File: </label>
+                                        <select id="background-to-remove">background</select><br>
+                                        <input type="submit" name="action" value="Remove Background" >
+                                    </form>
+                                </div>
+                                
+                                <div id="remove-gameObject-content" class="tabContent removeElementContent hide">
+
+                                    <form id="remove-gameObject-form">
+                                        <label>File: </label>
+                                        <select id="game-object-to-remove">gameObject</select><br>
+                                        <input type="submit" name="action" value="Remove GameObject" >
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        
+        <script type="module" src="editor.js"></script>
+    </body>
+</html>

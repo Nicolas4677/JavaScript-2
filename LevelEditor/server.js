@@ -1,11 +1,11 @@
-// Copyright (C) 2020 Scott Henshaw, All Rights Reserved
+// Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict';
 
 import Express from 'express'
 import Path from 'path'
 import HTTP from 'http'
-import FileSystem from 'fs'
 
+import EditorAPI from './EditorAPI'
 
 const PORT = 3000;
 
@@ -15,66 +15,22 @@ class Server {
 
         this.api = Express();
         this.api.use( Express.json() )
-                .use( Express.urlencoded({ extended: false }))
-                .use( Express.static( Path.join( __dirname, '.')));
+                .use( Express.urlencoded({ extended: true }))
+                .use( Express.static( Path.join( __dirname, '.')))
+                .use ( '/api', EditorAPI);
 
+        this.api.get('/editor', ( request, response ) => {
+
+            let indexFile = Path.join(__dirname + '/editor.html')
+            response.sendFile(indexFile, { title:'Editor'} );
+        });
 
         this.api.get('/', ( request, response ) => {
-            response.render('index',{ title:'Greatest Form Demo Ever!'})
-        });
-
-        this.api.post('/api', ( request, response ) => {
-            // handle edges from form
-
-            let params = request.params; // data attached in the url /api/:name/:id
-            let query = request.query;   // data attached as a PHP param String
-            let data = request.body;     // data attached as JSON data
-
-
-            let result = this.handleActionQuery( request.query.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
-        });
-
-        this.api.post('/api/:action', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery( request.params.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
-        });
-
-        this.api.post('/api/save', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery('save', request.query, request.body );
-
-            // Lets get some data to the client
-            // TODO: something with the form we got sent, like save the content as a file
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
+            let indexFile = Path.join(__dirname + '/index.html')
+            response.sendFile('index', { title:'AngryPigs'} );
         });
 
         this.run()
-    }
-
-    handleActionQuery( action, query, body ) {
-
-        let result = { error: -1 };
-        let command = (action == '' ? body.action : action);
-        switch (command) {
-            case 'Validate':
-                result.error = 0;
-                break;
-
-            case 'Submit':
-                result.error = 0;
-                break;
-
-            default:
-                result = { error: -2, ...body }
-                break;
-        }
-        // send the result back as JSON data
-        return result
     }
 
     run() {
@@ -87,7 +43,7 @@ class Server {
             let addr = this.listener.address();
             let bind = typeof addr == `string` ? `pipe ${addr}`: `port ${addr.port}`;
 
-            console.log(`Listneing on ${bind}`)
+            console.log(`Listening on ${bind}`)
         });
     }
 }

@@ -1,0 +1,87 @@
+<!--Copyright (C) Omar Pino. All Rights Reserved.-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Angry Pigs - Level Editor</title>
+
+        <meta name="description" content="Demo">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/game-style.css">
+
+        <!-- This is the key CDN to pull jQuery from -->
+        <!-- To operate offline we may want these to load from a local source -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="scripts/lib/Box2dWeb-2.1.a.3.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="topBar">
+            <div class="title">
+            
+            </div>
+        </div>
+        
+        <section style="position: fixed; width: 100%;">
+
+            <!--Game Display-->
+            <div style=" width: 100%; justify-content: center">
+
+                <div id="game-display" class="gameResolution">
+
+                    <div class="adjustToParent" style="display: flex; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+                            
+                            <!--Play Button-->
+                            <span id="play-button" class="mainMenuButton">Play</span> 
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </section>
+        <!--Pop Ups-->
+        <section id="popUpWindow" class="adjustToParent popUpSection hide">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="popUpContainer">
+
+                    <div style="position: relative; left: 400px; top: 20px;">
+                        <i id="closePopUp" class="fas fa-times-circle barIcon barButton buttonHoverOutColor"></i>
+                    </div>
+
+                    <div style="display: flex; width: 100%; height: 100%; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+
+                            <!--Load Menu-->
+                            <div id="load-menu" class="popUpContent">
+                                <div class="tab">
+                                    <button id="load-level" class="tabLinks loadTab inactiveTab">Level</button>
+                                </div>
+                                  
+                                <div id="load-level-content" class="tabContent loadContent">
+                                    <form id="load-level-form">
+                                        <label>Level: </label>
+                                        <select id="level-to-load">level</select><br>
+                                        <input type="submit" name="action" value="Select" >
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        
+        <script type="module" src="./scripts/game/index.js"></script>
+    </body>
+</html>
